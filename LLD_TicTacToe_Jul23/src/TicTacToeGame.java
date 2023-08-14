@@ -1,3 +1,4 @@
+import Controller.GameController;
 import Models.*;
 
 import java.util.LinkedList;
@@ -29,9 +30,8 @@ public class TicTacToeGame {
 
             System.out.println("Enter Bot Diffculty level: 1-Easy 2-Med 3-Hard");
             int diffcultyLevel = scanner.nextInt();
-            //todo for value to enum
             players.add(new Bot(botSymbol.charAt(0), name,
-                    BotDifficultyLevel.EASY));
+                    BotDifficultyLevel.fromValue(diffcultyLevel)));
 
         }
 
@@ -46,11 +46,25 @@ public class TicTacToeGame {
             players.add(player);
         }
 
-        Game game = Game.getBuilder()
-                        .setDimension(dimension)
-                        .setPlayers(players)
-                        .build();
+//        Game game = Game.getBuilder()
+//                        .setDimension(dimension)
+//                        .setPlayers(players)
+//                        .build();
+
+        GameController gameController = new GameController();
+        Game game = gameController.createGame(dimension, players);
 
 
+        while(gameController.getGameStatus(game) == GameStatus.IN_PROGRESS) {
+            // players will be playing
+            break;
+        }
+
+        if(gameController.getGameStatus(game) == GameStatus.ENDED) {
+            // someone has won
+            System.out.println("Winning Player: " + gameController.getWinnerName(game));
+        } else {
+            System.out.println("Game has drawn");
+        }
     }
 }

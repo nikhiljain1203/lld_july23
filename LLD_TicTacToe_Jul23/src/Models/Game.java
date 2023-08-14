@@ -11,6 +11,16 @@ public class Game {
     private GameStatus gameStatus;
     private int nextPlayerIndex;
 
+    private Player winningPlayer;
+
+    public Player getWinner() {
+        return winningPlayer;
+    }
+
+    public void setWinner(Player winner) {
+        this.winningPlayer = winner;
+    }
+
     private Game() {}
 
     public Board getBoard() {
