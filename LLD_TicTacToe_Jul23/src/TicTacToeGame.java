@@ -53,16 +53,29 @@ public class TicTacToeGame {
 
         GameController gameController = new GameController();
         Game game = gameController.createGame(dimension, players);
+        gameController.setGameStatus(game, GameStatus.IN_PROGRESS);
 
 
-        while(gameController.getGameStatus(game) == GameStatus.IN_PROGRESS) {
+        while(gameController.getGameStatus(game) ==
+                GameStatus.IN_PROGRESS) {
             // players will be playing
-            break;
+            System.out.println("Current Board: ");
+            gameController.displayBoard(game);
+
+            System.out.println("Do you want to undo ? y/n");
+            String input = scanner.next();
+
+            if (input.equals("y")) {
+                gameController.undo(game);
+            } else {
+                gameController.executeNextMove(game);
+            }
         }
 
         if(gameController.getGameStatus(game) == GameStatus.ENDED) {
             // someone has won
-            System.out.println("Winning Player: " + gameController.getWinnerName(game));
+            System.out.println("Winning Player: " +
+                    gameController.getWinnerName(game));
         } else {
             System.out.println("Game has drawn");
         }
