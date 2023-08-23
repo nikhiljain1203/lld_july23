@@ -9,10 +9,19 @@ import java.util.Date;
 public class TicketService {
     private VehicleService vehicleService;
     private GateService gateService;
-
     private ParkingLotService parkingLotService;
-
     private TicketRepository ticketRepository;
+
+    public TicketService(VehicleService vehicleService,
+                         GateService gateService,
+                         ParkingLotService parkingLotService,
+                         TicketRepository ticketRepository) {
+        this.vehicleService = vehicleService;
+        this.gateService = gateService;
+        this.parkingLotService = parkingLotService;
+        this.ticketRepository = ticketRepository;
+    }
+
     public Ticket generateTicket(String vehicleNumber, VehicleType vehicleType, Long gateId)
             throws NoParkingSpotFoundException {
         /*

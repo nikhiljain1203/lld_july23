@@ -2,6 +2,8 @@ package Controller;
 
 import DTO.GenerateTicketRequestDto;
 import DTO.GenerateTicketResponseDto;
+import DTO.ResponseStatus;
+import Excpetions.NoParkingSpotFoundException;
 import Models.Ticket;
 import Service.TicketService;
 
@@ -18,7 +20,12 @@ public class TicketController {
     //2. We should not expose the Model details to client because of privacy.
     //The solution to this : Data Transfer Objects (DTO).
 
-    public GenerateTicketResponseDto generateTicket(GenerateTicketRequestDto generateTicketRequestDto) {
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
+    public GenerateTicketResponseDto generateTicket(
+            GenerateTicketRequestDto generateTicketRequestDto) {
         // business logic
         // 1. Get Vehicle from the DB
         // 2. Add vehicle in DB
@@ -30,15 +37,22 @@ public class TicketController {
         // always pass only required details to service.
         // Not all details of request are applicable for all service
 
-        Ticket ticket = ticketService
-                .generateTicket(generateTicketRequestDto.getVehicleNumber(),
-                generateTicketRequestDto.getVehicleType(),
-                generateTicketRequestDto.getGateId());
-
         GenerateTicketResponseDto responseDto = new GenerateTicketResponseDto();
-        responseDto.setTicket(ticket);
 
-        return null;
-
+        try {
+            Ticket ticket = ticketService
+                    .generateTicket(generateTicketRequestDto.getVehicleNumber(),
+                    generateTicketRequestDto.getVehicleType(),
+                    generateTicketRequestDto.getGateId());
+            responseDto.setTicket(ticket);
+            responseDto.setResponseStatus(ResponseStatus.SUCCESS);
+        } catch (NoParkingSpotFoundException e) {
+            responseDto.setResponseStatus(ResponseStatus.FALIURE);
+            responseDto.setResponseMessage(e.getMessage());
+        } catch (Exception e) {
+            responseDto.setResponseStatus(ResponseStatus.FALIURE);
+            responseDto.setResponseMessage(e.getMessage());
+        }
+        return responseDto;
     }
 }

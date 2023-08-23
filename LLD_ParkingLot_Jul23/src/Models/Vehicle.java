@@ -6,7 +6,7 @@ public class Vehicle extends BaseEntity {
 
     public Vehicle(VehicleType vehicleType, String number) {
         this.vehicleType = vehicleType;
-        this.number = number
+        this.number = number;
     }
 
     public VehicleType getVehicleType() {

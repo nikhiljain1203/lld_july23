@@ -21,5 +21,6 @@ public class VehicleRepository {
 
     public Vehicle addVehicle(Vehicle vehicle) {
         vehicleStore.put(vehicle.getNumber(), vehicle);
+        return vehicle;
     }
 }
